@@ -6,4 +6,4 @@ Member2: Michael McGaha
 
 Member3: Faizan Mohammad
 
-Member4: Daniel Park
+Member4: This is Daniel Park
