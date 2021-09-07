@@ -1,6 +1,6 @@
 # 11279group36
 
-Member1: Name
+Member1: Name\n
 Member2: Name
 Member3: Name
 Member4: Name
