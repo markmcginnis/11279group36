@@ -2,8 +2,8 @@
 
 Member1: Mark McGinnis
 
-Member2:
+Member2: Michael McGaha
 
-Member3:
+Member3: Faizan Mohammad
 
-Member4:
+Member4: Daniel Park
