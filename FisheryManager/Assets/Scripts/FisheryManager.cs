@@ -17,12 +17,11 @@ public class FisheryManager : MonoBehaviour
     public void Harvest()
     {
         //harvest logic here, clamp the harvested population to healthyPopulation
-        Debug.Log("harvest pressed");
     }
 
     public void Disease()
     {
-        //harvest logic here, use random and counter to determine numbers
+        //disease logic here, use random and counter to determine numbers
     }
 
     public void Birth()
@@ -34,5 +33,10 @@ public class FisheryManager : MonoBehaviour
     public void Start()
     {
         //initialize what is needed
+    }
+
+    public void ButtonTest()
+    {
+        Debug.Log("button has been pressed");
     }
 }

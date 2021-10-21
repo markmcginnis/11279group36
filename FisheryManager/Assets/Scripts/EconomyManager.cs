@@ -9,7 +9,7 @@ public class EconomyManager : MonoBehaviour
 
     public void Sell()
     {
-        Debug.Log("sell pressed");
+
     }
 
     void Start()
