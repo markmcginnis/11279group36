@@ -10,10 +10,6 @@ namespace MathModel
         assume "maximum" fecal matter concetration of 10 kg/m^3
         */
 
-        public int testAdd(int a, int b)
-        {
-            return a + b;
-        }
         /*
         structure for unit testing
         1. Check valid probability (0 < x < 1) on lowest input value
