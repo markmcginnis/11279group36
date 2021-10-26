@@ -7,14 +7,6 @@ using MathModel;
 public class MathTestSuite
 {
     // Start is called before the first frame update
-    [UnityTest]
-    public IEnumerator testAddIntegers()
-    {
-        var testObject = new FishMath();
-        int temp = testObject.testAdd(5, 3);
-        yield return null;
-        Assert.AreEqual(temp, 8);
-    }
 
     // int maxConcentration = 10;
     // double decomposition = 5;
