@@ -13,11 +13,23 @@ public class ToggleButton: MonoBehaviour
         if(startSoundButton.sprite == buttonSprites[0])
         {
             startSoundButton.sprite = buttonSprites[1];
-            AudioListener.pause = !AudioListener.pause;
+            AudioListener.pause = true;
             return;
         }
-        AudioListener.pause = !AudioListener.pause;
+        AudioListener.pause = false;
         startSoundButton.sprite = buttonSprites[0];
+    }
+
+    public void Update()
+    {
+        if(AudioListener.pause == false)
+        {
+            startSoundButton.sprite = buttonSprites[0];
+        }
+        else
+        {
+            startSoundButton.sprite = buttonSprites[1];
+        }
     }
 
 }
