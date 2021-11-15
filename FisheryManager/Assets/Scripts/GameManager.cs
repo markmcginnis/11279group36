@@ -33,11 +33,11 @@ public class GameManager : MonoBehaviour
 
         //update fecal meter
         fecalMeter.value = (float)fm.fecalMatterConcentration;
-        if(fecalMeter.value < 0.25)
+        if (fecalMeter.value < 0.25)
         {
             fecalFill.color = Color.green;
         }
-        else if(fecalMeter.value < 0.75)
+        else if (fecalMeter.value < 0.75)
         {
             fecalFill.color = Color.yellow;
         }
@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
         }
         //update disease meter
         diseaseMeter.value = (float)fm.sickPopulation / (float)fm.totalPopulation;
-        if(diseaseMeter.value < 0.25)
+        if (diseaseMeter.value < 0.25)
         {
             diseaseFill.color = Color.green;
         }
@@ -146,4 +146,30 @@ public class GameManager : MonoBehaviour
         result = result < 0 ? 0 : result;
         return result;
     }
+
+    public void saveGame()
+    {
+        SaveAndLoad.saveGame(fm, em);
+    }
+
+    public void loadGame()
+    {
+        SaveData newData = SaveAndLoad.loadGame();
+        fm.capacity = newData.capacity;
+        fm.totalPopulation = newData.totalPopulation;
+        fm.healthyPopulation = newData.healthyPopulation;
+        fm.sickPopulation = newData.sickPopulation;
+        fm.maxConcentration = newData.maxConcentration;
+        fm.fecalMatterConcentration = newData.fecalMatterConcentration;
+        fm.decompositionRate = newData.decompositionRate;
+        fm.antibioticsMax = newData.antibioticsMax;
+        fm.growthConstant = newData.growthConstant;
+        em.fishPrice = newData.fishPrice;
+        em.filteringCost = newData.filteringCost;
+        em.antibioticCost = newData.antibioticCost;
+        em.totalRevenue = newData.totalRevenue;
+        em.totalCosts = newData.totalCosts;
+        em.totalProfit = newData.totalProfit;
+    }
 }
+

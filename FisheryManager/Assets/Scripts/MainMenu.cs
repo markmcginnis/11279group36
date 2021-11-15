@@ -18,6 +18,6 @@ public class MainMenu : MonoBehaviour
 
     public void Guide()
     {
-        Debug.Log("options pressed");
+        SceneManager.LoadScene("UserGuide");
     }
 }
