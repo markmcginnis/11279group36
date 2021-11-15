@@ -12,12 +12,12 @@ public class FisheryManager : MonoBehaviour
     public int healthyPopulation = 65;
     public int sickPopulation = 35; //several categories for population numbers
 
-    public double maxConcentration = 1;
-    public double fecalMatterConcentration = 0.2; //keep track of our various things for the math models
-    public double decompositionRate = 25;
-    public double antibioticsMax = 1;
+    public float maxConcentration = 1f;
+    public float fecalMatterConcentration = 0.2f; //keep track of our various things for the math models
+    public float decompositionRate = 25f;
+    public float antibioticsMax = 1f;
 
-    public double growthConstant = 0.5; //FIXME change to feeding amount??
+    public float growthConstant = 0.5f; //FIXME change to feeding amount??
 
     public Slider filteringSlider;
     public Slider antibioticsSlider; //sliders for values
@@ -25,66 +25,82 @@ public class FisheryManager : MonoBehaviour
 
     public bool harvest = false; //only harvest when this is true
 
-    double windowSize = 1;
-    double stepSize = 0.01; //euler values
+    float windowSize = 1f;
+    float stepSize = 0.01f; //euler values
 
     public GameManager gm; //holds FishMath
     public EconomyManager em; //holds economy stuff
 
     public void TimeStep()
     {
+        //print("Before: ");
+        //print("Total Population: " + totalPopulation);
+        //print("Healthy Population: " + healthyPopulation);
+        //print("Sick Population: " + sickPopulation);
+        //print("Fecal Concentration: " + fecalMatterConcentration);
         Harvest();
         AdvanceFecal();
         Disease();
         Birth();
+        //print("After: ");
+        //print("Total Population: " + totalPopulation);
+        //print("Healthy Population: " + healthyPopulation);
+        //print("Sick Population: " + sickPopulation);
+        //print("Fecal Concentration: " + fecalMatterConcentration);
     }
 
     public void Harvest()
     {
         if (!harvest)
         {
-            em.Sell(0, (double)filteringSlider.value, (double)antibioticsSlider.value);
+            em.Sell(0, filteringSlider.value, antibioticsSlider.value);
             return;
         }
-        int harvestCount = (int)Math.Floor((double)harvestSlider.value * healthyPopulation);
+        int harvestCount = (int)Mathf.Floor(harvestSlider.value * healthyPopulation);
+        //print("HarvestCount: " + harvestCount);
         healthyPopulation -= harvestCount;
         totalPopulation -= harvestCount;
-        em.Sell(harvestCount, (double)filteringSlider.value, (double)antibioticsSlider.value);
+        //print("Population after Harvest: " + totalPopulation);
+        em.Sell(harvestCount, filteringSlider.value, antibioticsSlider.value);
     }
 
     public void AdvanceFecal()
     {
-        print(fecalMatterConcentration);
-        fecalMatterConcentration = gm.GetFecalConcentration(totalPopulation, fecalMatterConcentration, (double)filteringSlider.value * decompositionRate);
-        print(fecalMatterConcentration);
+        //print("Fecal before: " + fecalMatterConcentration);
+        float newFecalMatterConcentration = gm.GetFecalConcentration(totalPopulation, fecalMatterConcentration, filteringSlider.value * decompositionRate);
+        newFecalMatterConcentration = Mathf.Clamp(newFecalMatterConcentration, 0, maxConcentration);
+        fecalMatterConcentration = newFecalMatterConcentration;
+        //print("Fecal after: " + fecalMatterConcentration);
     }
 
     public void Disease()
     {
-        double diseaseProbability = gm.Disease(totalPopulation, maxConcentration, fecalMatterConcentration, (double)antibioticsSlider.value, antibioticsMax);
-        int newDiseasedPopulation = (int)Math.Floor(diseaseProbability * healthyPopulation);
+        float diseaseProbability = gm.Disease(totalPopulation, maxConcentration, fecalMatterConcentration, antibioticsSlider.value/2f, antibioticsMax);
+        int newDiseasedPopulation = (int)Mathf.Floor(diseaseProbability * healthyPopulation);
         sickPopulation += newDiseasedPopulation;
         healthyPopulation -= newDiseasedPopulation; //disease affects first
         
-        double recoveryProbability = gm.Recovery(sickPopulation, maxConcentration, fecalMatterConcentration, (double)antibioticsSlider.value, antibioticsMax);
-        int newHealthyPopulation = (int)Math.Floor(recoveryProbability * sickPopulation);
+        float recoveryProbability = gm.Recovery(sickPopulation, maxConcentration, fecalMatterConcentration, antibioticsSlider.value/2f, antibioticsMax);
+        int newHealthyPopulation = (int)Mathf.Floor(recoveryProbability * sickPopulation);
         healthyPopulation += newHealthyPopulation;
         sickPopulation -= newHealthyPopulation; //recovery affects second
     }
 
     public void Birth()
     {
-        totalPopulation = gm.EulerLogistic(totalPopulation, capacity, windowSize, stepSize, growthConstant); //if this changes to healthy only, change capacity to capacity - diseased
+        int newPopulation = gm.EulerLogistic(totalPopulation, capacity, windowSize, stepSize, growthConstant);
+        healthyPopulation += newPopulation - totalPopulation;
+        totalPopulation = newPopulation;
     }
 
     public void DecreaseGrowth()
     {
-        growthConstant = Math.Max(0.2,growthConstant - 0.1); //growthConstant cannot go below 0.2
+        growthConstant = Mathf.Max(0.2f,growthConstant - 0.1f); //growthConstant cannot go below 0.2
     }
 
     public void IncreaseGrowth()
     {
-        growthConstant = Math.Min(0.8, growthConstant + 0.1); //growthConstant cannot go above 0.8
+        growthConstant = Mathf.Min(0.8f, growthConstant + 0.1f); //growthConstant cannot go above 0.8
     }
 
     public void ToggleHarvest()
@@ -96,4 +112,6 @@ public class FisheryManager : MonoBehaviour
     {
         Debug.Log("button has been pressed");
     }
+
+    
 }

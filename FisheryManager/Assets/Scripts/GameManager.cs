@@ -32,7 +32,8 @@ public class GameManager : MonoBehaviour
         //update potential harvest/profit/cost text
 
         //update fecal meter
-        fecalMeter.value = (float)fm.fecalMatterConcentration;
+        fecalMeter.value = (float)fm.fecalMatterConcentration / (float)fm.maxConcentration;
+        //print("FecalMeter: " + fecalMeter.value);
         if(fecalMeter.value < 0.25)
         {
             fecalFill.color = Color.green;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         }
         //update disease meter
         diseaseMeter.value = (float)fm.sickPopulation / (float)fm.totalPopulation;
+        //print("DiseaseMeter: " + diseaseMeter.value);
         if(diseaseMeter.value < 0.25)
         {
             diseaseFill.color = Color.green;
@@ -61,17 +63,18 @@ public class GameManager : MonoBehaviour
         }
         //update population meter
         populationMeter.value = (float)fm.totalPopulation / (float)fm.capacity;
-        if (diseaseMeter.value < 0.25)
+        //print("PopulationMeter: " + populationMeter.value);
+        if (populationMeter.value < 0.25)
         {
-            diseaseFill.color = Color.red;
+            populationFill.color = Color.red;
         }
-        else if (diseaseMeter.value < 0.75)
+        else if (populationMeter.value < 0.75)
         {
-            diseaseFill.color = Color.yellow;
+            populationFill.color = Color.yellow;
         }
         else
         {
-            diseaseFill.color = Color.green;
+            populationFill.color = Color.green;
         }
         //update feeding amount
         feedAmount.text = "Feeding Amount: " + fm.growthConstant;
@@ -100,37 +103,38 @@ public class GameManager : MonoBehaviour
     3. Check valid probability at median value
     4. Check that probability is nonlinear f(0.5) - f(0.25) != f(0.75) = f(0.5)
     */
-    public int EulerLogistic(int currentPop, int carryingCap, double n, double h, double growthConstant)
+    public int EulerLogistic(int currentPop, int carryingCap, float n, float h, float growthConstant)
     {
         // this method uses Euler's Method and a logistic ODE
         if (currentPop == 0)
         {
             return currentPop;
         }
-        double result = currentPop;
-        for (double i = 0; i <= n; i += h)
+        float result = currentPop;
+        for (float i = 0; i <= n; i += h)
         {
-            result += h * growthConstant * result * (1.0 - (result / carryingCap));
+            result += h * growthConstant * result * (1.0f - (result / carryingCap));
         }
-        int finalResult = (int)Math.Floor(result);
+        int finalResult = (int)Mathf.Floor(result);
         return finalResult;
     }
 
-    public double Disease(int population, double maxConc, double fecalMatterConc, double antibiotics, double antibioticsMax)
+    public float Disease(int population, float maxConc, float fecalMatterConc, float antibiotics, float antibioticsMax)
     {
         // this method uses an exponential distribution with lambda = 1
-        double exp = -1 * (maxConc - fecalMatterConc) / 2;
-        double probability = Math.Exp(exp);
-        double antibioticsMultiplier = Math.Log(2.5 - antibiotics / antibioticsMax);
+        float exp = -1f * (maxConc - fecalMatterConc) / 2f;
+        float probability = Mathf.Exp(exp);
+        float antibioticsMultiplier = Mathf.Log(2.5f - antibiotics / antibioticsMax);
         // this method returns the probability of a fish catching the disease, puts a cap at 0.75
-        double result = antibioticsMultiplier * probability > 0.75 ? antibioticsMultiplier * probability : 0.75;
+        float result = Mathf.Clamp(antibioticsMultiplier * probability, 0f, 0.75f);
+        //float result = antibioticsMultiplier * probability > 0.75f ? antibioticsMultiplier * probability : 0.75f;
         return result;
     }
 
-    public double Recovery(int population, double maxConc, double fecalMatterConc, double antibiotics, double antibioticsMax)
+    public float Recovery(int population, float maxConc, float fecalMatterConc, float antibiotics, float antibioticsMax)
     {
-        double probability = Math.Exp(-1 * (fecalMatterConc / maxConc));
-        probability /= 4;
+        float probability = Mathf.Exp(-1f * (fecalMatterConc / maxConc));
+        probability /= 4f;
         return probability;
     }
 
@@ -139,9 +143,9 @@ public class GameManager : MonoBehaviour
         return population -= harvest;
     }
 
-    public double GetFecalConcentration(int population, double fecalMatterConc, double decomposition)
+    public float GetFecalConcentration(int population, float fecalMatterConc, float decomposition)
     {
-        double result = fecalMatterConc + 0.01 * population;
+        float result = fecalMatterConc + 0.01f * population;
         result -= decomposition; // assume a decomposition of 5
         result = result < 0 ? 0 : result;
         return result;

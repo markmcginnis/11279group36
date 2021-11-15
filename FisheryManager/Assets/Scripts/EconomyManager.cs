@@ -14,10 +14,10 @@ public class EconomyManager : MonoBehaviour
     public int totalCosts = 0;
     public int totalProfit = 0;
 
-    public void Sell(int harvestCount, double filtering, double antibiotics)
+    public void Sell(int harvestCount, float filtering, float antibiotics)
     {
         totalRevenue += harvestCount * fishPrice; //update totalRevenue according to price
-        totalCosts += (int)Math.Floor(filtering * filteringCost) + (int)Math.Floor(antibiotics * antibioticCost); //update totalCosts according to filtering/antibiotics
+        totalCosts += (int)Mathf.Floor(filtering * (float)filteringCost) + (int)Mathf.Floor(antibiotics * (float)antibioticCost); //update totalCosts according to filtering/antibiotics
         totalProfit = totalRevenue - totalCosts; //update totalProfit
     }
 }

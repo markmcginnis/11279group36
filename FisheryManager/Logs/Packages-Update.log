@@ -65,3 +65,22 @@ The following packages were updated:
   com.unity.ide.vscode from version 1.2.3 to 1.2.4
   com.unity.timeline from version 1.5.6 to 1.6.2
   com.unity.visualscripting from version 1.6.1 to 1.7.2
+
+=== Mon Nov 15 16:57:12 2021
+
+Packages were changed.
+Update Mode: resetToDefaultDependencies
+
+The following packages were updated:
+  com.unity.collab-proxy from version 1.13.5 to 1.9.0
+  com.unity.ide.vscode from version 1.2.4 to 1.2.3
+  com.unity.timeline from version 1.6.2 to 1.5.6
+  com.unity.visualscripting from version 1.7.2 to 1.6.1
+The following packages were removed:
+  com.unity.2d.animation@7.0.0
+  com.unity.2d.pixel-perfect@5.0.1
+  com.unity.2d.psdimporter@6.0.0
+  com.unity.2d.sprite@1.0.0
+  com.unity.2d.spriteshape@7.0.0
+  com.unity.2d.tilemap@1.0.0
+  com.unity.2d.tilemap.extras@2.2.0
