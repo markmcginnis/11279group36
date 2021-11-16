@@ -17,12 +17,16 @@ public class GameManager : MonoBehaviour
     public Image populationFill;
 
     public TMP_Text feedAmount;
-    //more text elements for economy tab
+    public Text weekText;
+    public Text profitText;
+    public Text fishText;
 
     public Text harvestButton;
 
     public FisheryManager fm;
     public EconomyManager em;
+
+    public LineGraphManager lm;
 
     //update all UI elements
     void Update()
@@ -30,7 +34,9 @@ public class GameManager : MonoBehaviour
         //update harvest button with true/false
         harvestButton.text = (fm.harvest) ? "Harvest: Yes" : "Harvest: No";
         //update potential harvest/profit/cost text
-
+        weekText.text = "Week " + fm.week;
+        profitText.text = "Total Profit: $" + em.totalProfit;
+        fishText.text = "Fish Sold: " + em.fishSold;
         //update fecal meter
         fecalMeter.value = (float)fm.fecalMatterConcentration / (float)fm.maxConcentration;
         //print("FecalMeter: " + fecalMeter.value);
@@ -153,7 +159,7 @@ public class GameManager : MonoBehaviour
 
     public void saveGame()
     {
-        SaveAndLoad.saveGame(fm, em);
+        SaveAndLoad.saveGame(fm, em, lm);
     }
 
     public void loadGame()
@@ -174,5 +180,9 @@ public class GameManager : MonoBehaviour
         em.totalRevenue = newData.totalRevenue;
         em.totalCosts = newData.totalCosts;
         em.totalProfit = newData.totalProfit;
+        lm.graphData1 = newData.gd1;
+        lm.graphData2 = newData.gd2;
+        fm.week = newData.week;
+        em.fishSold = newData.fishSold;
     }
 }

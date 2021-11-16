@@ -12,6 +12,8 @@ public class FisheryManager : MonoBehaviour
     public int healthyPopulation = 65;
     public int sickPopulation = 35; //several categories for population numbers
 
+    public int week = 1;
+
     public float maxConcentration = 1f;
     public float fecalMatterConcentration = 0.2f; //keep track of our various things for the math models
     public float decompositionRate = 25f;
@@ -38,6 +40,7 @@ public class FisheryManager : MonoBehaviour
         //print("Healthy Population: " + healthyPopulation);
         //print("Sick Population: " + sickPopulation);
         //print("Fecal Concentration: " + fecalMatterConcentration);
+        week++;
         Harvest();
         AdvanceFecal();
         Disease();
