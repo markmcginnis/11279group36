@@ -6,6 +6,7 @@ using UnityEngine;
 public class EconomyManager : MonoBehaviour
 {
     public int fishPrice = 10; //affects revenue
+    public int fishSold = 0;
 
     public int filteringCost = 2500; //affects cost
     public int antibioticCost = 2500;
@@ -19,5 +20,6 @@ public class EconomyManager : MonoBehaviour
         totalRevenue += harvestCount * fishPrice; //update totalRevenue according to price
         totalCosts += (int)Mathf.Floor(filtering * (float)filteringCost) + (int)Mathf.Floor(antibiotics * (float)antibioticCost); //update totalCosts according to filtering/antibiotics
         totalProfit = totalRevenue - totalCosts; //update totalProfit
+        fishSold += harvestCount;
     }
 }
